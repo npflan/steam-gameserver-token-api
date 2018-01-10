@@ -1,4 +1,4 @@
-# Steam Gameserver Token Manager
+# Steam Gameserver Token Util
 
 A commandline utility for managing Steam Gameserver Tokens through Steam Web API.
 
