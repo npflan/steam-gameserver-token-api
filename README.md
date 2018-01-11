@@ -16,11 +16,14 @@ The Utility currently supports three features.
 
 If the utility receives an X-error_message Response Header, it will log the message to console, and exit.
 
-## Build commands
+## Build
 
 ```sh
 # Windows
-GOOS=windows GOARCH=amd64 go build -o sgtu.exe main.go
+GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o sgtu.exe main.go
+
 # Linux
-GOOS=linux GOARCH=amd64 go build -o sgtu main.go
+GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o sgtu main.go
 ```
+
+All binary releases of sgtu are compressed with `upx --brute`.
