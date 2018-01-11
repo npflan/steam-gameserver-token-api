@@ -15,3 +15,12 @@ The Utility currently supports three features.
 * Delete Gameserver Account by ID (SteamID)
 
 If the utility receives an X-error_message Response Header, it will log the message to console, and exit.
+
+## Build commands
+
+```sh
+# Windows
+GOOS=windows GOARCH=amd64 go build -o sgtu.exe main.go
+# Linux
+GOOS=linux GOARCH=amd64 go build -o sgtu main.go
+```
