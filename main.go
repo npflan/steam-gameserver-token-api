@@ -158,7 +158,7 @@ func main() {
 				if err := json.Unmarshal(data, &response); err != nil {
 					log.Fatal(err)
 				}
-				fmt.Printf("%s;%s;%s;%s;%s;%s;%s", "AppID", "IsDeleted", "IsExpired", "LastLogon", "LoginToken", "Memo", "SteamID")
+				fmt.Printf("%s;%s;%s;%s;%s;%s;%s\n", "AppID", "IsDeleted", "IsExpired", "LastLogon", "LoginToken", "Memo", "SteamID")
 				for _, server := range response.Servers {
 					fmt.Printf("%d;%t;%t;%d;%s;%s;%s\n", server.AppID, server.IsDeleted, server.IsExpired, server.LastLogon, server.LoginToken, server.Memo, server.SteamID)
 				}
