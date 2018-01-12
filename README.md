@@ -20,10 +20,13 @@ If the utility receives an X-error_message Response Header, it will log the mess
 
 ```sh
 # Windows
-GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o sgtu.exe main.go
+GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o steam-api.exe main.go
 
 # Linux
-GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o sgtu main.go
+GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o steam-api main.go
+
+# OSX
+GOOS=darwin go build -ldflags="-s -w" -o steam-api main.go
 ```
 
-All binary releases of sgtu are compressed with `upx --brute`.
+All binary releases of steam-api are compressed with `upx --brute`.
