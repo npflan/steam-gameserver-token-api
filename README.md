@@ -1,32 +1,37 @@
-# Steam Api Utility
+# Steam Gameserver REST API
 
-A commandline utility for managing Steam Gameserver Tokens through Steam Web API.
+A REST API for pulling Steam Gameserver Tokens through Steamworks Web API.
 
-Its primary target is the IGameServersService Interface, and the code has been built on knowledge from two sources.  
+Its wraps the IGameServersService Interface, and the code has been built on knowledge from two sources.  
 A [community made API reference](http://steamwebapi.azurewebsites.net/).  
 And the [Steamworks Documentation Website](https://partner.steamgames.com/doc/webapi/IGameServersService).
 
-It currently outputs all returned API JSON data as unquoted Semicolon Separated Values with Headers.
+It returns tokens as text/plain on the following URL:
 
-The Utility currently supports three features.
+> [GET] /token/{appID}/{memo}
 
-* Create new Gameserver Account with accompanying Token
-* List Gameserver Accounts
-* Delete Gameserver Account by ID (SteamID)
+* **appID** is the Steam Application ID (e.g. 740 for CSGO dedicated server)
+* **memo** is a note that uniquely identifies a gameserver
 
-If the utility receives an X-error_message Response Header, it will log the message to console, and exit.
+The library it uses to communicate with Steamworks Web API is [nested in this project](steam/README.md).
+
+## Errors
+
+Errors from the Steamworks Web API will be forwarded as JSON objects.
+
+> { "error": "some error happened" }
 
 ## Build
 
 ```sh
 # Windows
-GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o steam-api.exe main.go
+GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o steam-api.exe main.go app.go
 
 # Linux
-GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o steam-api main.go
+GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o steam-api main.go app.go
 
 # OSX
-GOOS=darwin go build -ldflags="-s -w" -o steam-api main.go
+GOOS=darwin go build -ldflags="-s -w" -o steam-api main.go app.go
 ```
 
-All binary releases of steam-api are compressed with `upx --brute`.
+Optionally, you can cut down binary size with `upx --brute`.
