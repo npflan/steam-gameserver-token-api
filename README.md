@@ -6,6 +6,12 @@ Its wraps the IGameServersService Interface, and the code has been built on know
 A [community made API reference](http://steamwebapi.azurewebsites.net/).  
 And the [Steamworks Documentation Website](https://partner.steamgames.com/doc/webapi/IGameServersService).
 
+## Getting started
+
+The application need a `STEAM_WEB_API_KEY` environment variable, which can be generated / found [here](https://steamcommunity.com/dev/apikey).
+
+It will listen on `0.0.0.0:8000`, unless you override with the `STEAM_WEB_API_BIND_ADDRESS` environment variable.
+
 It returns tokens as text/plain on the following URL:
 
 > [GET] /token/{appID}/{memo}
