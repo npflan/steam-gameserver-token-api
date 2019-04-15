@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	_ "github.com/npflan/steam-api/steam"
+	_ "github.com/npflan/steam-gameserver-token-api/steam"
 )
 
 func mayEnv(envVar string, deflt string) string {

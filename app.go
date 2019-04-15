@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/npflan/steam-api/steam"
+	"github.com/npflan/steam-gameserver-token-api/steam"
 )
 
 // App contains references to global necessities
@@ -62,6 +63,7 @@ func respondWithText(w http.ResponseWriter, code int, payload string) {
 
 // RespondWithError standardizes error messages, through the use of RespondWithJSON.
 func respondWithError(w http.ResponseWriter, code int, message string) {
+	fmt.Println(message)
 	respondWithJSON(w, code, map[string]string{"error": message})
 }
 
@@ -82,13 +84,13 @@ func (a *App) pullToken(w http.ResponseWriter, r *http.Request) {
 
 	appID, err := strconv.Atoi(vars["appID"])
 	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "bad appID")
+		respondWithError(w, http.StatusBadRequest, fmt.Sprintf("bad appID: %s", err))
 		return
 	}
 
 	accounts, err := steam.GetAccountList()
 	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, "Unable to list existing tokens")
+		respondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Unable to list existing tokens: %s", err))
 		return
 	}
 
