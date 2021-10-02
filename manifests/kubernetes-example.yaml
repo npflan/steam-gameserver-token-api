@@ -1,5 +1,5 @@
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: steam-gameserver-token-api
 spec:
@@ -9,17 +9,22 @@ spec:
       labels:
         app: steam-gameserver-token-api
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
       - name: steam-gameserver-token-api
         image: npflan/steam-gameserver-token-api:1.0.0
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 8000
         env:
           - name: STEAM_WEB_API_KEY
             value: ""
           - name: STEAM_WEB_API_BIND_ADDRESS
-            value: ":80"
+            value: ":8000"
         resources:
           requests:
             memory: "250Mi"
@@ -41,4 +46,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 8000
