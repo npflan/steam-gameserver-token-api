@@ -27,8 +27,8 @@ type Log struct {
 const defaultLogFormat = log.Ldate | log.Ltime | log.Lmicroseconds | log.Lshortfile | log.LUTC
 
 // Run server on specific interface
-func (a *App) Run(addr string) {
-	a.registerRoutes()
+func (a *App) Run(addr string, enableWiping bool) {
+	a.registerRoutes(enableWiping)
 	// set default log format if no custom format present
 	if a.Log.Info == nil {
 		log.New(os.Stdout, "INFO: ", defaultLogFormat)
@@ -39,10 +39,14 @@ func (a *App) Run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, a.Router))
 }
 
-func (a *App) registerRoutes() {
+func (a *App) registerRoutes(enableWiping bool) {
 	a.Router = mux.NewRouter().StrictSlash(true)
 	a.Router.HandleFunc("/", a.getHome).Methods("GET")
 	a.Router.HandleFunc("/token/{appID}/{memo}", a.pullToken).Methods("GET")
+
+	if enableWiping {
+		a.Router.HandleFunc("/wipe", a.wipeTokens).Methods("GET")
+	}
 }
 
 // RespondWithJSON uses a struct, for a JSON response.
@@ -121,4 +125,22 @@ func (a *App) pullToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	respondWithText(w, http.StatusOK, account.LoginToken)
+}
+
+func (a *App) wipeTokens(w http.ResponseWriter, r *http.Request) {
+	accounts, err := steam.GetAccountList()
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, fmt.Sprintf("Unable to list existing tokens: %s", err))
+		return
+	}
+
+	for _, acct := range accounts {
+		err = steam.DeleteAccount(acct.SteamID)
+		if err != nil {
+			respondWithError(w, http.StatusInternalServerError, err.Error())
+			return
+		}
+	}
+
+	respondWithText(w, http.StatusOK, "OK")
 }
